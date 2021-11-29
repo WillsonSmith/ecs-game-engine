@@ -7,28 +7,42 @@
 `main.lua`
 
 ```lua
-  local tiny = require "engine/lib/tiny"
-  local lighting = require "engine.system.lighting"
-  local lamp = require "engine.entity.lamp"
+local tiny = require 'lib/tiny'
+local lamp = require 'engine/entity/lamp'
+local lighting = require 'engine/system/lighting'
 
-  local game = {}
-  function love.load()
-    game.world = tiny.world(
-      lamp({
-        x = love.graphics.width / 2,
-        y = love.graphics.height / 2
-      }),
-      lighting
-    )
-    game.world:update(0)
-  end
+local game = {
+  fullscreen = false,
+  vsync = true,
+  msaa = 0
+}
+function love.load()
+  love.graphics.setDefaultFilter("nearest", "nearest")
+  love.window.setMode(800, 600, game)
+  love.window.setTitle("ECS Game Engine")
 
-  function love.update(dt)
-    game.world:update(dt)
-  end
+  game.world = tiny.world(
+    lamp({
+      x = love.graphics:getWidth() / 2,
+      y = love.graphics:getHeight() / 2,
+      color = {255, 255, 255},
+      on_screen = true,
+    }),
+    lighting.from_map,
+    lighting.lights,
+    lighting.draw
+  )
 
-  function love.draw()
-  end
+  game.world:update(0)
+end
+
+function love.update(dt)
+  game.world:update(dt)
+end
+
+function love.draw()
+  lighting.draw:update(love.timer.getDelta())
+end
 ```
 
 ---
