@@ -27,7 +27,6 @@ function love.load()
       color = {255, 255, 255},
       on_screen = true,
     }),
-    lighting.from_map,
     lighting.lights,
     lighting.draw
   )
