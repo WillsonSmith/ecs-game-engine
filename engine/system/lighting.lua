@@ -2,27 +2,27 @@ local tiny = require 'lib/tiny'
 local Timer = require 'lib/hump/timer'
 local hextocolor = require 'lib/hextocolor'
 
-local lighter = require 'engine.entity.lighter'
+local lighting_environment = require 'engine.entity.lighting_environment'
 local lamp = require 'engine.entity.lamp'
 
 local lighting = {}
-lighting.light = tiny.processingSystem()
-lighting.light.filter = tiny.requireAll("light")
-function lighting.light:onAdd(e)
+lighting.lights = tiny.processingSystem()
+lighting.lights.filter = tiny.requireAll("light")
+function lighting.lights:onAdd(light)
   if not lighting.lighter then
-    for _, e in ipairs(self.world.entities) do
+    for _, entity in ipairs(self.world.entities) do
       if lighting.lighter then break end
       local filter = tiny.requireAll("lighter")
 
-      if filter(self.world, e) then
-        lighting.lighter = e.lighter
+      if filter(self.world, entity) then
+        lighting.lighter = entity.lighter
         break
       end
     end
     
-    local lighter = lighter()
-    lighting.lighter = lighter.lighter
-    tiny.addEntity(self.world, lighter)
+    local environment = lighting_environment()
+    lighting.lighter = environment.lighter
+    tiny.addEntity(self.world, environment)
   end
 
   local color = e.light.color
@@ -39,15 +39,14 @@ function lighting.light:onAdd(e)
   e.light.light = light
 end
 
-function lighting.light:onRemove(e)
+function lighting.lights:onRemove(e)
   if lighting.lighter then lighting.lighter:removeLight(e.light.light) end
 end
 
-function lighting.light:process(e, dt)
+function lighting.lights:process(e, dt)
   if not e.on_screen then return end
   if e.needs_update then
     local light = e.light
-
     lighting.lighter:updateLight(
       light.light,
       light.position.x,
@@ -154,9 +153,9 @@ function lighting.draw:process(e, dt)
   e.lighter:drawLights()
 end
 
-lighting.lamps = tiny.processingSystem()
-lighting.lamps.filter = tiny.requireAll('map')
-function lighting.lamps:onAdd(map)
+lighting.from_map = tiny.processingSystem()
+lighting.from_map.filter = tiny.requireAll('map')
+function lighting.from_map:onAdd(map)
   local lights = map.map.layers["lights"]
   if not lights then return end
 
@@ -191,4 +190,4 @@ function lighting.lamps:onAdd(map)
   end
 end
 
-return {lighting = lighting.light, drawlights = lighting.draw, maplighting = lighting.lamps}
+return lighting
