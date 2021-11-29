@@ -5,23 +5,25 @@ local hextocolor = require 'lib/hextocolor'
 local lighting_environment = require 'engine.entity.lighting_environment'
 local lamp = require 'engine.entity.lamp'
 
-local lighting = {}
+local lighting = {
+  illumunator = nil
+}
 lighting.lights = tiny.processingSystem()
 lighting.lights.filter = tiny.requireAll("light")
 function lighting.lights:onAdd(light)
-  if not lighting.lighter then
+  if not lighting.illumunator then
     for _, entity in ipairs(self.world.entities) do
-      if lighting.lighter then break end
-      local filter = tiny.requireAll("lighter")
+      if lighting.illumunator then break end
+      local filter = tiny.requireAll("illumunator")
 
       if filter(self.world, entity) then
-        lighting.lighter = entity.lighter
+        lighting.illumunator = entity.illumunator
         break
       end
     end
     
     local environment = lighting_environment()
-    lighting.lighter = environment.lighter
+    lighting.illumunator = environment.illumunator
     tiny.addEntity(self.world, environment)
   end
 
@@ -30,24 +32,24 @@ function lighting.lights:onAdd(light)
   local g = color.g
   local b = color.b
   local a = color.a or 1
-  local lighter_light = lighting.lighter:addLight(
+  local illumunator_light = lighting.illumunator:addLight(
     light.position.x,
     light.position.y,
     light.light.radius,
     r, g, b, a
   )
-  light.light.light = lighter_light
+  light.light.light = illumunator_light
 end
 
 function lighting.lights:onRemove(light)
-  if lighting.lighter then lighting.lighter:removeLight(light.light.light) end
+  if lighting.illumunator then lighting.illumunator:removeLight(light.light.light) end
 end
 
 function lighting.lights:process(e, dt)
   if not e.on_screen then return end
   if e.needs_update then
     local light = e.light
-    lighting.lighter:updateLight(
+    lighting.illumunator:updateLight(
       light.light,
       light.position.x,
       light.position.y,
@@ -119,9 +121,9 @@ function lighting.lights:process(e, dt)
 end
 
 lighting.draw = tiny.processingSystem()
-lighting.draw.filter = tiny.requireAll("lighter")
+lighting.draw.filter = tiny.requireAll("illumunator")
 function lighting.draw:onRemoveFromWorld()
-  lighting.lighter = nil
+  lighting.illumunator = nil
 end
 
 function lighting.draw:onAdd(e)
@@ -145,13 +147,13 @@ function lighting.draw:onAdd(e)
       local x3, y3 = x + width, y + height
       local x4, y4 = x, y + height
       local wall = {x1, y1, x2, y2, x3, y3, x4, y4}
-      e.lighter:addPolygon(wall)
+      e.illumunator:addPolygon(wall)
     end
   end
 end
 
 function lighting.draw:process(e, dt)
-  e.lighter:drawLights()
+  e.illumunator:drawLights()
 end
 
 lighting.from_map = tiny.processingSystem()
