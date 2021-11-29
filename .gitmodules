@@ -1,0 +1,9 @@
+[submodule "lib/lighter"]
+	path = lib/lighter
+	url = https://github.com/speakk/lighter.git
+[submodule "lib/tiny"]
+	path = lib/tiny
+	url = https://github.com/bakpakin/tiny-ecs.git
+[submodule "lib/hump"]
+	path = lib/hump
+	url = https://github.com/vrld/hump.git
