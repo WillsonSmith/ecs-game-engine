@@ -1,6 +1,5 @@
 # ECS Game Engine
-
-## a Lua based game engine for Löve2D
+a Lua based game engine for Löve2D
 
 ### How to use
 
