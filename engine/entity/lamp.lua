@@ -1,4 +1,4 @@
-local position = require("engine.component.position")
+local position = require("engine/component/position")
 
 function lamp(options)
   local x = options.x or 0

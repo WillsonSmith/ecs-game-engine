@@ -1,6 +1,6 @@
-local tiny = require 'lib.tiny'
-local lamp = require 'engine.entity.lamp'
-local lighting = require 'engine.system.lighting'
+local tiny = require 'lib/tiny'
+local lamp = require 'engine/entity/lamp'
+local lighting = require 'engine/system/lighting'
 
 local game = {
   fullscreen = false,
@@ -15,13 +15,14 @@ function love.load()
     lamp({
       x = love.graphics:getWidth() / 2,
       y = love.graphics:getHeight() / 2,
-      on_screen = true
+      color = {255, 255, 255},
+      on_screen = true,
     }),
-    lighting.light_system,
     lighting.from_map,
     lighting.lights,
     lighting.draw
   )
+
   game.world:update(0)
 end
 
@@ -30,4 +31,5 @@ function love.update(dt)
 end
 
 function love.draw()
+  lighting.draw:update(love.timer.getDelta())
 end

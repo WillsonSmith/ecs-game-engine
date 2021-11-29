@@ -25,22 +25,22 @@ function lighting.lights:onAdd(light)
     tiny.addEntity(self.world, environment)
   end
 
-  local color = e.light.color
+  local color = light.light.color
   local r = color.r
   local g = color.g
   local b = color.b
   local a = color.a or 1
-  local light = lighting.lighter:addLight(
-    e.position.x,
-    e.position.y,
-    e.light.radius,
+  local lighter_light = lighting.lighter:addLight(
+    light.position.x,
+    light.position.y,
+    light.light.radius,
     r, g, b, a
   )
-  e.light.light = light
+  light.light.light = lighter_light
 end
 
-function lighting.lights:onRemove(e)
-  if lighting.lighter then lighting.lighter:removeLight(e.light.light) end
+function lighting.lights:onRemove(light)
+  if lighting.lighter then lighting.lighter:removeLight(light.light.light) end
 end
 
 function lighting.lights:process(e, dt)
@@ -136,16 +136,17 @@ function lighting.draw:onAdd(e)
     end
   end
 
-  for _, object in pairs(lighting.map.map.layers["walls"].objects) do
-    local x, y = object.x, object.y 
-    local width, height = object.width, object.height
-
-    local x1, y1 = x, y
-    local x2, y2 = x + width, y
-    local x3, y3 = x + width, y + height
-    local x4, y4 = x, y + height
-    local wall = {x1, y1, x2, y2, x3, y3, x4, y4}
-    e.lighter:addPolygon(wall)
+  if lighting.map then 
+    for _, object in pairs(lighting.map.map.layers["walls"].objects) do
+      local x, y = object.x, object.y 
+      local width, height = object.width, object.height
+      local x1, y1 = x, y
+      local x2, y2 = x + width, y
+      local x3, y3 = x + width, y + height
+      local x4, y4 = x, y + height
+      local wall = {x1, y1, x2, y2, x3, y3, x4, y4}
+      e.lighter:addPolygon(wall)
+    end
   end
 end
 
