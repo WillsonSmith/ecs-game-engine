@@ -43,6 +43,9 @@ function love.draw()
   lighting.draw:update(love.timer.getDelta())
 end
 ```
+<img width="912" alt="Screen Shot 2021-11-28 at 11 26 42 PM" src="https://user-images.githubusercontent.com/1087756/143808912-a20f0e3d-2128-41e9-85d2-75f80f58c1ed.png">
+
+
 
 ---
 
