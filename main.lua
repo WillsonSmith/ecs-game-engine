@@ -1,4 +1,5 @@
 local tiny = require 'lib/tiny'
+local Timer = require 'lib/hump/timer'
 local lamp = require 'engine/entity/lamp'
 local lighting = require 'engine/system/lighting'
 
@@ -18,6 +19,7 @@ function love.load()
       y = love.graphics:getHeight() / 2,
       color = {255, 255, 255},
       on_screen = true,
+      flicker = true
     }),
     lighting.from_map,
     lighting.lights,
@@ -28,6 +30,7 @@ function love.load()
 end
 
 function love.update(dt)
+  Timer.update(dt)
   game.world:update(dt)
 end
 

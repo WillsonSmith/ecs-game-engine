@@ -73,28 +73,20 @@ function lighting.lights:process(e, dt)
       Timer.script(function(wait)
         local alpha = a
         Timer.tween(
-          5,
-          e.light.color, 
-          {r = r, g = g, b = b, a = alpha}, 
-          'out-elastic'
-        )
-        wait(2)
-
-        Timer.tween(
-          5,
+          0.5,
           e.light.color, 
           {r = r, g = g, b = b, a = alpha * -1}, 
           'out-elastic'
         )
-        wait(2)
+        wait(0.2)
 
         Timer.tween(
-          5,
-          e.light.color,
-          {r = r, g = g, b = b, a = alpha},
+          0.5,
+          e.light.color, 
+          {r = r, g = g, b = b, a = alpha}, 
           'out-elastic'
         )
-        wait(100)
+        wait(5)
         e.light.tweening = false
       end)
     end
