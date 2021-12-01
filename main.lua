@@ -1,7 +1,13 @@
-local tiny = require 'lib/tiny'
-local Timer = require 'lib/hump/timer'
-local lamp = require 'engine/entity/lamp'
-local lighting = require 'engine/system/lighting'
+local tiny = require "lib/tiny"
+local Timer = require "lib/hump/timer"
+
+local entity_box2dWorld = require "engine/entity/physics/box2d"
+
+local entity_tiledMap = require "engine/entity/tiled_map"
+local system_mapBox2dCollision = require "engine/system/map/collision/box2d"
+local system_drawMap = require "engine/system/map/draw"
+
+local debug_system_drawBox2dWorld = require "engine/system/debug/collision/box2d"
 
 local game = {
   fullscreen = false,
@@ -14,16 +20,18 @@ function love.load()
   love.window.setTitle("ECS Game Engine")
 
   game.world = tiny.world(
-    lamp({
-      x = love.graphics:getWidth() / 2,
-      y = love.graphics:getHeight() / 2,
-      color = {255, 255, 255},
-      on_screen = true,
-      flicker = true
+    -- entity_box2dWorld(0, 9.8),
+    entity_tiledMap({
+      map_file = "assets/maps/map.lua",
+      drawing_layers = {
+        "background",
+        "foreground"
+      },
+      collision_layer = "collision"
     }),
-    lighting.from_map,
-    lighting.lights,
-    lighting.draw
+    system_mapBox2dCollision,
+    system_drawMap,
+    debug_system_drawBox2dWorld
   )
 
   game.world:update(0)
@@ -35,5 +43,6 @@ function love.update(dt)
 end
 
 function love.draw()
-  lighting.draw:update(love.timer.getDelta())
+  system_drawMap:update(love.timer.getDelta())
+  debug_system_drawBox2dWorld:update(love.timer.getDelta())
 end

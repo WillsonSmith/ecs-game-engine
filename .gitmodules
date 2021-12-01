@@ -7,3 +7,9 @@
 [submodule "lib/hump"]
 	path = lib/hump
 	url = https://github.com/vrld/hump.git
+[submodule "lib/windfield"]
+	path = lib/windfield
+	url = https://github.com/a327ex/windfield.git
+[submodule "lib/sti"]
+	path = lib/sti
+	url = https://github.com/karai17/Simple-Tiled-Implementation.git
