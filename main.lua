@@ -36,6 +36,12 @@ function love.load()
         shape = "rectangle"
       }
     })
+    table.insert(test_entities, {
+      collision = {
+        shape = "polygon",
+        points = {150, 100, 200, 50, 250, 150},
+      }
+    })
 
   game.world = tiny.world(
     system.box2d_world,
