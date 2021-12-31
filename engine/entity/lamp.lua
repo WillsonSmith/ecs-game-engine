@@ -1,6 +1,6 @@
 local position = require("engine/component/position")
 
-function lamp(options)
+local function lamp(options)
   local x = options.x or 0
   local y = options.y or 0
   local color = options.color or {255, 255, 255}
