@@ -1,6 +1,5 @@
 local tiny = require 'lib/tiny'
 local windfield = require 'lib/windfield/windfield'
-local box2d_world = require "engine/entity/physics/box2d"
 
 local box2d_colliders = {}
 box2d_colliders.init = tiny.processingSystem()
@@ -17,11 +16,6 @@ function box2d_colliders.init:onAdd(e)
       world = e
       break
     end
-  end
-
-  if not world then
-    world = box2d_world()
-    self.world:addEntity(world)
   end
 
   -- Create the collider

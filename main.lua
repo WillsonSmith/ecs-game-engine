@@ -1,14 +1,26 @@
 local tiny = require "lib/tiny"
 local Timer = require "lib/hump/timer"
 
-local box2d_world = require "engine/entity/physics/box2d"
-local box2d_colliders = require "engine/system/collision/box2d"
+local entity = {}
+entity.box2d_world = require "engine/entity/physics/box2d_world"
+
+local component = {}
+local system = {}
+
+system.box2d_world = require "engine/system/physics/box2d_world"
+system.box2d_colliders = require "engine/system/collision/box2d_colliders"
+
+system.debug = {}
+system.debug.draw = {}
+system.debug.draw.box2d_world = require "engine/system/physics/debug/box2d_world"
+-- local box2d_world = require "engine/entity/physics/box2d"
+-- local box2d_colliders = require "engine/system/collision/box2d"
 -- local entity_tiledMap = require "engine/entity/tiled_map"
 -- local system_mapBox2dCollision = require "engine/system/map/collision/box2d"
 -- local system_drawMap = require "engine/system/map/draw"
-local debug = {}
-debug.draw = {}
-debug.draw.box2d_world = require "engine/system/debug/collision/box2d"
+-- local debug = {}
+-- debug.draw = {}
+-- debug.draw.box2d_world = require "engine/system/debug/collision/box2d"
 
 
 local game = {
@@ -22,7 +34,11 @@ function love.load()
   love.window.setTitle("ECS Game Engine")
 
   game.world = tiny.world(
-    box2d_world(0, 9.8),
+    entity.box2d_world(0, 9.8),
+    system.box2d_world,
+    system.box2d_colliders.init,
+    system.box2d_colliders.update,
+    system.debug.draw.box2d_world,
     {
       x = 10,
       y = 10,
@@ -31,7 +47,7 @@ function love.load()
       collision = {
         shape = "rectangle"
       }
-    },
+    }
     -- entity_tiledMap({
     --   map_file = "assets/maps/map.lua",
     --   drawing_layers = {
@@ -43,9 +59,6 @@ function love.load()
     -- system_mapBox2dCollision,
     -- system_drawMap,
     -- debug_system_drawBox2dWorld,
-    debug.draw.box2d_world,
-    box2d_colliders.init,
-    box2d_colliders.update
     -- box2d_colliders.debug.draw
   )
 
@@ -61,5 +74,5 @@ function love.draw()
   -- box2d_colliders.debug.draw(love.timer.getDelta())
   -- system_drawMap:update(love.timer.getDelta())
   -- debug_system_drawBox2dWorld:update(love.timer.getDelta())
-  debug.draw.box2d_world:update(love.timer.getDelta())
+  system.debug.draw.box2d_world:update(love.timer.getDelta())
 end
