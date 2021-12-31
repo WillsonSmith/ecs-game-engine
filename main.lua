@@ -44,7 +44,7 @@ function love.load()
     })
 
   game.world = tiny.world(
-    system.box2d_world,
+    system.box2d_world.init,
     system.box2d_colliders.init,
     system.box2d_colliders.update,
     system.debug.draw.box2d_world,
