@@ -6,7 +6,8 @@ function box2d(gravityX, gravityY, collisionClasses)
 
   if collisionClasses then
     for _, class in collisionClasses do
-      world:addCollisionClass(class)
+      -- class {'Player', {ignores = {'Player', 'Enemy'}}}
+      world:addCollisionClass(unpack(class))
     end
   end
 

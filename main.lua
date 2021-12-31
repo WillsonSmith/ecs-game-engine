@@ -41,9 +41,9 @@ function love.load()
     })
     table.insert(test_entities, {
       collision = {
+        static = true,
         shape = "polygon",
-        points = {150, 100, 200, 50, 250, 150},
-        static = true
+        points = {150, 100, 200, 50, 250, 150}
       }
     })
 
