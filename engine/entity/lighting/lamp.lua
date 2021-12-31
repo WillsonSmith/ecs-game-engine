@@ -1,5 +1,14 @@
 local position = require("engine/component/position")
 
+--[[
+  lamp({
+    x = love.graphics:getWidth() / 2,
+    y = love.graphics:getHeight() / 2,
+    color = {255, 255, 255},
+    on_screen = true,
+  })
+]]--
+
 local function lamp(options)
   local x = options.x or 0
   local y = options.y or 0

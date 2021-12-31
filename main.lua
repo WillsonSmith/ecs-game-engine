@@ -10,18 +10,10 @@ local system = {}
 system.box2d_world = require "engine/system/physics/box2d_world"
 system.box2d_colliders = require "engine/system/collision/box2d_colliders"
 
+-- Debug systems
 system.debug = {}
 system.debug.draw = {}
 system.debug.draw.box2d_world = require "engine/system/physics/debug/box2d_world"
--- local box2d_world = require "engine/entity/physics/box2d"
--- local box2d_colliders = require "engine/system/collision/box2d"
--- local entity_tiledMap = require "engine/entity/tiled_map"
--- local system_mapBox2dCollision = require "engine/system/map/collision/box2d"
--- local system_drawMap = require "engine/system/map/draw"
--- local debug = {}
--- debug.draw = {}
--- debug.draw.box2d_world = require "engine/system/debug/collision/box2d"
-
 
 local game = {
   fullscreen = false,
@@ -48,14 +40,6 @@ function love.load()
         shape = "rectangle"
       }
     }
-    -- entity_tiledMap({
-    --   map_file = "assets/maps/map.lua",
-    --   drawing_layers = {
-    --     "background",
-    --     "foreground"
-    --   },
-    --   collision_layer = "collision"
-    -- }),
     -- system_mapBox2dCollision,
     -- system_drawMap,
     -- debug_system_drawBox2dWorld,
