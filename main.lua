@@ -4,9 +4,13 @@ local Timer = require "lib/hump/timer"
 local entity = {}
 entity.box2d_world = require "engine/entity/physics/box2d_world"
 
+-- Tiled map
+entity.map = require "engine/entity/map/tiled_map"
+
 local component = {}
 local system = {}
 
+-- Box2D system
 system.box2d_world = require "engine/system/physics/box2d_world"
 system.box2d_colliders = require "engine/system/collision/box2d_colliders"
 
@@ -25,8 +29,11 @@ function love.load()
   love.window.setMode(800, 600, game)
   love.window.setTitle("ECS Game Engine")
 
+  local meter = 16
+  love.physics.setMeter(meter)
+
   local test_entities = {}
-    table.insert(test_entities, entity.box2d_world(0, 9.8))
+    table.insert(test_entities, entity.box2d_world(0, 9.8 * meter))
     table.insert(test_entities, {
       x = 10,
       y = 10,
@@ -38,8 +45,9 @@ function love.load()
     })
     table.insert(test_entities, {
       collision = {
+        static = true,
         shape = "polygon",
-        points = {150, 100, 200, 50, 250, 150},
+        points = {150, 100, 200, 50, 250, 150}
       }
     })
 
@@ -60,5 +68,6 @@ function love.update(dt)
 end
 
 function love.draw()
-  system.debug.draw.box2d_world:update(love.timer.getDelta())
+  local dt = love.timer.getDelta()
+  system.debug.draw.box2d_world:update(dt)
 end

@@ -25,11 +25,20 @@ function box2d_colliders.init:onAdd(e)
     e.collision.collider = world.world:newRectangleCollider(e.x, e.y, e.width, e.height)
   end
   if shape == "polygon" then
-    world.world:newPolygonCollider(collider.points)
+    e.collision.collider = world.world:newPolygonCollider(collider.points)
   end
   if shape == "ellipse" then
     print("ellipse not implemented")
   end
+
+  if e.collision.static then
+    e.collision.collider:setType('static')
+  end
+
+  -- Add the entity to the collder's userData
+  local userData = e.collision.collider:getUserData()
+  userData.entity = e
+  e.collision.collider:setUserData(userData)
 
   -- Add the world to the box2d_colliders object
   box2d_colliders.world = world
