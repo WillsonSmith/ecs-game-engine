@@ -25,8 +25,11 @@ function love.load()
   love.window.setMode(800, 600, game)
   love.window.setTitle("ECS Game Engine")
 
+  local meter = 16
+  love.physics.setMeter(meter)
+
   local test_entities = {}
-    table.insert(test_entities, entity.box2d_world(0, 9.8))
+    table.insert(test_entities, entity.box2d_world(0, 9.8 * meter))
     table.insert(test_entities, {
       x = 10,
       y = 10,
@@ -40,6 +43,7 @@ function love.load()
       collision = {
         shape = "polygon",
         points = {150, 100, 200, 50, 250, 150},
+        static = true
       }
     })
 

@@ -1,1 +1,1 @@
-local tiny = require "lib.tiny"
+local tiny = require "lib/tiny"
