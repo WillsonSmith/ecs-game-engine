@@ -1,6 +1,6 @@
 local sti = require "lib/sti/sti"
 
-function tiled_map(options)
+local function tiled_map(options)
   local options = options or {}
   local tile_width = options.tile_width or 32
   local tile_height = options.tile_height or 32
