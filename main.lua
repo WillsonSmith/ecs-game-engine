@@ -1,13 +1,19 @@
 local tiny = require "lib/tiny"
 local Timer = require "lib/hump/timer"
 
-local entity_box2dWorld = require "engine/entity/physics/box2d"
+local entity = {}
+entity.box2d_world = require "engine/entity/physics/box2d_world"
 
-local entity_tiledMap = require "engine/entity/tiled_map"
-local system_mapBox2dCollision = require "engine/system/map/collision/box2d"
-local system_drawMap = require "engine/system/map/draw"
+local component = {}
+local system = {}
 
-local debug_system_drawBox2dWorld = require "engine/system/debug/collision/box2d"
+system.box2d_world = require "engine/system/physics/box2d_world"
+system.box2d_colliders = require "engine/system/collision/box2d_colliders"
+
+-- Debug systems
+system.debug = {}
+system.debug.draw = {}
+system.debug.draw.box2d_world = require "engine/system/physics/debug/box2d_world"
 
 local game = {
   fullscreen = false,
@@ -19,19 +25,30 @@ function love.load()
   love.window.setMode(800, 600, game)
   love.window.setTitle("ECS Game Engine")
 
+  local test_entities = {}
+    table.insert(test_entities, entity.box2d_world(0, 9.8))
+    table.insert(test_entities, {
+      x = 10,
+      y = 10,
+      width = 100,
+      height = 100,
+      collision = {
+        shape = "rectangle"
+      }
+    })
+    table.insert(test_entities, {
+      collision = {
+        shape = "polygon",
+        points = {150, 100, 200, 50, 250, 150},
+      }
+    })
+
   game.world = tiny.world(
-    -- entity_box2dWorld(0, 9.8),
-    entity_tiledMap({
-      map_file = "assets/maps/map.lua",
-      drawing_layers = {
-        "background",
-        "foreground"
-      },
-      collision_layer = "collision"
-    }),
-    system_mapBox2dCollision,
-    system_drawMap,
-    debug_system_drawBox2dWorld
+    system.box2d_world,
+    system.box2d_colliders.init,
+    system.box2d_colliders.update,
+    system.debug.draw.box2d_world,
+    unpack(test_entities)
   )
 
   game.world:update(0)
@@ -43,6 +60,5 @@ function love.update(dt)
 end
 
 function love.draw()
-  system_drawMap:update(love.timer.getDelta())
-  debug_system_drawBox2dWorld:update(love.timer.getDelta())
+  system.debug.draw.box2d_world:update(love.timer.getDelta())
 end

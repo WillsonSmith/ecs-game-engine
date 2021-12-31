@@ -1,5 +1,16 @@
 local sti = require "lib/sti/sti"
 
+--[[
+  tiled_map({
+    map_file = "assets/maps/map.lua",
+    drawing_layers = {
+      "background",
+      "foreground"
+    },
+    collision_layer = "collision"
+  }),
+]]--
+
 local function tiled_map(options)
   local options = options or {}
   local tile_width = options.tile_width or 32
