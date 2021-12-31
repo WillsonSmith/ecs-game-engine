@@ -10,11 +10,6 @@ entity.map = require "engine/entity/map/tiled_map"
 local component = {}
 local system = {}
 
--- Tiled system
-system.map = {}
-system.map.collision = require "engine/system/map/collision/box2d_colliders"
-system.map.draw = require "engine/system/map/draw"
-
 -- Box2D system
 system.box2d_world = require "engine/system/physics/box2d_world"
 system.box2d_colliders = require "engine/system/collision/box2d_colliders"
@@ -56,22 +51,11 @@ function love.load()
       }
     })
 
-    table.insert(test_entities, entity.map({
-      map_file = "assets/maps/map.lua",
-      drawing_layers = {
-        "background",
-        "foreground"
-      },
-      collision_layer = "collision"
-    }))
-
   game.world = tiny.world(
     system.box2d_world.init,
     system.box2d_colliders.init,
     system.box2d_colliders.update,
     system.debug.draw.box2d_world,
-    system.map.collision,
-    system.map.draw,
     unpack(test_entities)
   )
 
@@ -85,6 +69,5 @@ end
 
 function love.draw()
   local dt = love.timer.getDelta()
-  system.map.draw:update(dt)
   system.debug.draw.box2d_world:update(dt)
 end
